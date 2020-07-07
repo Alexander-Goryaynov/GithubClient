@@ -48,16 +48,17 @@ class SearchLogic {
                     val owner = repository.getJSONObject("owner")
                     val ownerLogin = owner.getString("login")
                     val ownerAvatarUrl = owner.getString("avatar_url")
+                    val commitsUrl = repository.getString("commits_url").
+                        split("{")[0]
                     list.add(Repository(name, description, language, forksCount, stargazersCount,
-                        ownerLogin, ownerAvatarUrl)
+                        ownerLogin, ownerAvatarUrl, commitsUrl)
                     )
                 }
             }
             return list
         }
+
         private fun makeView(recyclerView: RecyclerView,
-                             list: ArrayList<Repository>,
-                             context: Context) {
                              list: ArrayList<Repository>, context: Context) {
             recyclerView.adapter = SearchAdapter(list)
             recyclerView.layoutManager = LinearLayoutManager(context)
