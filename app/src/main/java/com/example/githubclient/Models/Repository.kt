@@ -7,5 +7,6 @@ data class Repository(
     val forksCount: Int?,
     val stargazersCount: Int?,
     val ownerLogin: String?,
-    val ownerAvatarUrl: String?
+    val ownerAvatarUrl: String?,
+    val commitsUrl: String?
 )

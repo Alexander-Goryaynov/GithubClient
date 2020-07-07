@@ -1,25 +1,23 @@
 package com.example.githubclient.Logic
 
 import android.content.Context
-import android.widget.EditText
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.example.githubclient.AdaptersAndHolders.SearchAdapter
-import com.example.githubclient.Managers.GithubRequest
+import com.example.githubclient.Managers.GithubJsonRequest
 import com.example.githubclient.Models.Repository
 import org.json.JSONObject
 
 class SearchLogic {
 
     companion object {
-        fun getRepositories(query: String,
-                            context: Context,
-                            queue: RequestQueue,
-                            recyclerView: RecyclerView) {
-            var request = GithubRequest(
+
+        fun getRepositories(query: String, context: Context,
+                            queue: RequestQueue, recyclerView: RecyclerView) {
+            var request = GithubJsonRequest(
                 "https://api.github.com/search/repositories?q=$query",
                 Response.Listener {
                         response -> makeView(recyclerView, parseReposResponse(response), context)
@@ -32,10 +30,11 @@ class SearchLogic {
         }
 
         private fun parseReposResponse(response: JSONObject): ArrayList<Repository> {
-            val list = arrayListOf<Repository>()
+            var list = arrayListOf<Repository>()
             if (response.getInt("total_count") == 0) {
                 list.add(Repository("NothingHasBeenFound", null, null,
-                    null, null, null, null))
+                    null, null, null, null,
+                    null))
             } else {
                 val items = response.getJSONArray("items")
                 for (i in 0 until items.length()) {
@@ -59,6 +58,7 @@ class SearchLogic {
         private fun makeView(recyclerView: RecyclerView,
                              list: ArrayList<Repository>,
                              context: Context) {
+                             list: ArrayList<Repository>, context: Context) {
             recyclerView.adapter = SearchAdapter(list)
             recyclerView.layoutManager = LinearLayoutManager(context)
         }
