@@ -25,7 +25,6 @@ class InfoActivity : AppCompatActivity() {
         val queue = Volley.newRequestQueue(this)
         setDataViews(queue)
         recyclerViewId.addItemDecoration(DividerItemDecoration(this, 1))
-        // todo протестить отображение на поиске "Maxin-I.P"
     }
 
     private fun setupActionBar() {
