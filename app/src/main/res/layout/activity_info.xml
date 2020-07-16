@@ -21,14 +21,14 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewId"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
+        app:civ_border_color="#FFFFFFFF"
+        app:civ_border_width="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewNameId"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#FFFFFFFF"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <TextView
@@ -36,7 +36,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:text="Автор репозитория:"
         app:layout_constraintStart_toEndOf="@+id/imageViewId"
         app:layout_constraintTop_toTopOf="@+id/imageViewId" />
@@ -62,4 +61,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewId" />
+
+    <Switch
+        android:id="@+id/switchSaveId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Сохранить"
+        app:layout_constraintStart_toStartOf="@+id/textViewOwnerLoginId"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOwnerLoginId" />
 </androidx.constraintlayout.widget.ConstraintLayout>

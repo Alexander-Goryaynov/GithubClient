@@ -1,19 +1,8 @@
-package com.example.githubclient.Managers
+package com.example.githubclient.Requests
 
-import android.app.DownloadManager
 import android.util.Base64
-import android.widget.Toast
-import com.android.volley.NetworkResponse
-import com.android.volley.ParseError
-import com.android.volley.Request
 import com.android.volley.Response
-import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.StringRequest
-import org.json.JSONException
-import org.json.JSONObject
-import java.io.UnsupportedEncodingException
-import java.lang.Exception
-import javax.xml.transform.ErrorListener
 
 class GithubStringRequest(url: String, _listener: Response.Listener<String>,
                           errorListener: Response.ErrorListener

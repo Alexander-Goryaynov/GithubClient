@@ -32,6 +32,9 @@ class SearchFragment : Fragment() {
         recyclerView.addItemDecoration(DividerItemDecoration(this.activity, 1))
         buttonSearch.setOnClickListener {
             val query = editTextId.text.toString()
+            if (query == "") {
+                return@setOnClickListener
+            }
             if (this.activity != null) {
                 SearchLogic.getRepositories(query, this.activity!!, queue, recyclerView)
             }

@@ -1,4 +1,4 @@
-package com.example.githubclient.Managers
+package com.example.githubclient.Requests
 
 import android.util.Base64
 import com.android.volley.NetworkResponse

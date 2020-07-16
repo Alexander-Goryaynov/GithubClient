@@ -3,8 +3,7 @@ package com.example.githubclient.AdaptersAndHolders
 import android.content.Context
 import android.content.Intent
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.githubclient.InfoActivity
@@ -12,6 +11,7 @@ import com.example.githubclient.InfoActivity.Companion.COMMITS_URL
 import com.example.githubclient.InfoActivity.Companion.NAME
 import com.example.githubclient.InfoActivity.Companion.OWNER_AVATAR_URL
 import com.example.githubclient.InfoActivity.Companion.OWNER_LOGIN
+import com.example.githubclient.Logic.FavoritesLogic
 import com.example.githubclient.Models.Repository
 import com.example.githubclient.R
 
@@ -25,8 +25,10 @@ class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val textViewStargazers: TextView = itemView.findViewById(R.id.textViewStargazersId)
     private val textViewOwnerLogin: TextView = itemView.findViewById(R.id.textViewOwnerLoginId)
     private val textViewAuthorId: TextView = itemView.findViewById(R.id.textViewMessageLabelId)
+    private val switchSaved: Switch = itemView.findViewById(R.id.switchSavedId)
 
     fun bind(repos: Repository) {
+        switchSaved.isChecked = FavoritesLogic.isInFavorites(repos.id!!, itemView.context)
         textViewName.text = repos.name
         textViewDescription.text = if (repos.description == null ||
             repos.description == "null") "" else repos.description
@@ -46,6 +48,13 @@ class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.setOnClickListener {
             openInfoActivity(itemView.context, repos)
         }
+        switchSaved.setOnCheckedChangeListener{ _: CompoundButton, isChecked: Boolean ->
+            if (isChecked) {
+                FavoritesLogic.addToFavorites(repos, itemView.context)
+            } else {
+                FavoritesLogic.removeFromFavorites(repos.id, itemView.context)
+            }
+        }
     }
 
     private fun openInfoActivity(context: Context, repos: Repository) {
@@ -53,7 +62,12 @@ class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             return
         }
         val intent = Intent(context, InfoActivity::class.java)
+        intent.putExtra("ID", repos.id!!)
         intent.putExtra("NAME", repos.name)
+        intent.putExtra("DESCRIPTION", repos.description)
+        intent.putExtra("LANGUAGE", repos.language)
+        intent.putExtra("FORKS_COUNT", repos.forksCount)
+        intent.putExtra("STARGAZERS_COUNT", repos.stargazersCount)
         intent.putExtra("COMMITS_URL", repos.commitsUrl)
         intent.putExtra("OWNER_AVATAR_URL", repos.ownerAvatarUrl)
         intent.putExtra("OWNER_LOGIN", repos.ownerLogin)

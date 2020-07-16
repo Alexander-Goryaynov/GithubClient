@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.example.githubclient.AdaptersAndHolders.SearchAdapter
-import com.example.githubclient.Managers.GithubJsonRequest
+import com.example.githubclient.Requests.GithubJsonRequest
 import com.example.githubclient.Models.Repository
 import org.json.JSONObject
 
@@ -32,13 +32,14 @@ class SearchLogic {
         private fun parseReposResponse(response: JSONObject): ArrayList<Repository> {
             var list = arrayListOf<Repository>()
             if (response.getInt("total_count") == 0) {
-                list.add(Repository("NothingHasBeenFound", null, null,
+                list.add(Repository(0, "NothingHasBeenFound", null, null,
                     null, null, null, null,
                     null))
             } else {
                 val items = response.getJSONArray("items")
                 for (i in 0 until items.length()) {
                     val repository = items.getJSONObject(i)
+                    val id = repository.getInt("id")
                     val name = repository.getString("name")
                     val description = repository.getString("description")
                     val language: String? = if (repository.getString("language") ==
@@ -50,7 +51,7 @@ class SearchLogic {
                     val ownerAvatarUrl = owner.getString("avatar_url")
                     val commitsUrl = repository.getString("commits_url").
                         split("{")[0]
-                    list.add(Repository(name, description, language, forksCount, stargazersCount,
+                    list.add(Repository(id, name, description, language, forksCount, stargazersCount,
                         ownerLogin, ownerAvatarUrl, commitsUrl)
                     )
                 }

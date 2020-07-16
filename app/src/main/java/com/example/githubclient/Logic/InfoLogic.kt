@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.example.githubclient.AdaptersAndHolders.InfoAdapter
-import com.example.githubclient.Managers.GithubStringRequest
+import com.example.githubclient.Requests.GithubStringRequest
 import com.example.githubclient.Models.Commit
 import org.json.JSONArray
 import org.json.JSONObject
