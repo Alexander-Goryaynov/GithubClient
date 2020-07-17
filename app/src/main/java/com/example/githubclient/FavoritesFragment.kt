@@ -1,5 +1,6 @@
 package com.example.githubclient
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.android.volley.toolbox.Volley
 import com.example.githubclient.AdaptersAndHolders.SearchAdapter
 import com.example.githubclient.Logic.FavoritesLogic
+import com.example.githubclient.Logic.SearchLogic
+import kotlinx.android.synthetic.main.fragment_search.*
 
 class FavoritesFragment : Fragment() {
 
@@ -20,13 +25,33 @@ class FavoritesFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_favorites, container, false)
         var recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewId)
         recyclerView.addItemDecoration(DividerItemDecoration(this.activity, 1))
+        var swipe = view.findViewById<SwipeRefreshLayout>(R.id.swipeId)
+        swipe.setColorSchemeResources(R.color.colorPrimaryDark)
         updateView(recyclerView)
         return view
+    }
+
+    fun reload() {
+        var recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerViewId)
+        if (recyclerView != null) {
+            updateView(recyclerView)
+        }
     }
 
     private fun updateView(recyclerView: RecyclerView) {
         var favorites = this.activity?.let { FavoritesLogic.getFavoritesList(it) }
         recyclerView.adapter = favorites?.let { SearchAdapter(it) }
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        var swipe = view.findViewById<SwipeRefreshLayout>(R.id.swipeId)
+        var recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewId)
+        val queue = Volley.newRequestQueue(this.activity)
+        swipe.setOnRefreshListener {
+            updateView(recyclerView)
+            swipe.isRefreshing = false
+        }
     }
 }
