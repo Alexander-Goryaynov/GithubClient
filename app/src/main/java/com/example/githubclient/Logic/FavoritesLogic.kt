@@ -1,7 +1,6 @@
 package com.example.githubclient.Logic
 
 import android.content.Context
-import android.widget.Toast
 import com.example.githubclient.Models.RealmRepository
 import com.example.githubclient.Models.Repository
 import io.realm.Realm
@@ -35,7 +34,7 @@ class FavoritesLogic {
         fun getFavoritesList(context: Context): List<Repository> {
             initRealm(context)
             val realm = Realm.getDefaultInstance()
-            var result = arrayListOf<Repository>()
+            val result = arrayListOf<Repository>()
             val query = realm.where(RealmRepository::class.java).findAll()
             for (i in query) {
                 val repos = Repository(

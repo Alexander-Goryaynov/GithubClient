@@ -1,6 +1,8 @@
 package com.example.githubclient.Logic
 
 import android.content.Context
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,22 +17,25 @@ class SearchLogic {
 
     companion object {
 
-        fun getRepositories(query: String, context: Context,
-                            queue: RequestQueue, recyclerView: RecyclerView) {
-            var request = GithubJsonRequest(
+        fun getRepositories(query: String, context: Context, queue: RequestQueue,
+                            recyclerView: RecyclerView, progressBar: ProgressBar) {
+            val request = GithubJsonRequest(
                 "https://api.github.com/search/repositories?q=$query",
                 Response.Listener {
                         response -> makeView(recyclerView, parseReposResponse(response), context)
+                        recyclerView.visibility = View.VISIBLE
+                        progressBar.visibility = ProgressBar.GONE
                 },
                 Response.ErrorListener {
                     Toast.makeText(context,"Ошибка запроса", Toast.LENGTH_LONG).show()
+                    progressBar.visibility = ProgressBar.GONE
                 }
             )
             queue.add(request)
         }
 
         private fun parseReposResponse(response: JSONObject): ArrayList<Repository> {
-            var list = arrayListOf<Repository>()
+            val list = arrayListOf<Repository>()
             if (response.getInt("total_count") == 0) {
                 list.add(Repository(0, "NothingHasBeenFound", null, null,
                     null, null, null, null,

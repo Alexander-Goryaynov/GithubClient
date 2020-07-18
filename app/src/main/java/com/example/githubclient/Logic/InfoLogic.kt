@@ -1,6 +1,7 @@
 package com.example.githubclient.Logic
 
 import android.content.Context
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,22 +17,24 @@ class InfoLogic {
 
     companion object {
 
-        fun getCommits(url: String, context: Context,
-                       queue: RequestQueue, recyclerView: RecyclerView) {
-            var request = GithubStringRequest(
+        fun getCommits(url: String, context: Context, queue: RequestQueue,
+                       recyclerView: RecyclerView, progressBar: ProgressBar) {
+            val request = GithubStringRequest(
                 url,
                 Response.Listener {
                         response -> makeView(recyclerView, parseCommitsResponse(response), context)
+                        progressBar.visibility = ProgressBar.GONE
                 },
                 Response.ErrorListener {
                     Toast.makeText(context,"Ошибка запроса", Toast.LENGTH_LONG).show()
+                    progressBar.visibility = ProgressBar.GONE
                 }
             )
             queue.add(request)
         }
 
         private fun parseCommitsResponse(response: String): ArrayList<Commit> {
-            var list = ArrayList<Commit>()
+            val list = ArrayList<Commit>()
             val jsonArr = JSONArray(response)
             for (i in 0 until jsonArr.length()) {
                 if (i > 9){

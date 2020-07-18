@@ -16,9 +16,9 @@ class GithubJsonRequest(
     errorListener: Response.ErrorListener
 ) : Request<JSONObject>(Method.GET, url, errorListener) {
 
-    val login = "Alexander-Goryaynov"
-    val token = "566581bc54dd1b7b4a57825f87d29587fa381ba1"
-    var listener: Response.Listener<JSONObject> = _listener
+    private val login = "Alexander-Goryaynov"
+    private val token = "566581bc54dd1b7b4a57825f87d29587fa381ba1"
+    private var listener: Response.Listener<JSONObject> = _listener
 
     override fun getHeaders(): MutableMap<String, String> {
         val headers = mutableMapOf<String, String>()

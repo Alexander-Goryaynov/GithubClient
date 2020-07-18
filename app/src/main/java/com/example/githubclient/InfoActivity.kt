@@ -2,7 +2,9 @@ package com.example.githubclient
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.CompoundButton
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
@@ -31,6 +33,7 @@ class InfoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_info)
         setupActionBar()
         val queue = Volley.newRequestQueue(this)
+        progressBarId.visibility = ProgressBar.VISIBLE
         setDataViews(queue)
         recyclerViewId.addItemDecoration(DividerItemDecoration(this, 1))
     }
@@ -40,7 +43,7 @@ class InfoActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setDisplayHomeAsUpEnabled(true)
         }
-        title = "Информация о репозитории"
+        title = "Подробности"
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -49,6 +52,7 @@ class InfoActivity : AppCompatActivity() {
     }
 
     private fun setDataViews(queue: RequestQueue) {
+        recyclerViewId.visibility = View.GONE
         val repository = Repository(
             intent?.extras?.getInt(ID),
             intent?.extras?.getString(NAME),
@@ -66,7 +70,7 @@ class InfoActivity : AppCompatActivity() {
         repository.commitsUrl?.let {
             InfoLogic.getCommits(
                 it, this,
-                queue, recyclerViewId)
+                queue, recyclerViewId, progressBarId)
         }
         switchSaveId.isChecked = FavoritesLogic.isInFavorites(
             repository.id!!, this)
@@ -74,8 +78,9 @@ class InfoActivity : AppCompatActivity() {
             if (isChecked) {
                 FavoritesLogic.addToFavorites(repository, this)
             } else {
-                FavoritesLogic.removeFromFavorites(repository.id!!, this)
+                FavoritesLogic.removeFromFavorites(repository.id, this)
             }
         }
+        recyclerViewId.visibility = View.VISIBLE
     }
 }
