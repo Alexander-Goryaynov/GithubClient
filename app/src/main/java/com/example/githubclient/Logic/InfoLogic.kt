@@ -19,6 +19,7 @@ class InfoLogic {
 
         fun getCommits(url: String, context: Context, queue: RequestQueue,
                        recyclerView: RecyclerView, progressBar: ProgressBar) {
+            val creds = AuthorizationLogic.getSavedCreds(context)
             val request = GithubStringRequest(
                 url,
                 Response.Listener {
@@ -28,7 +29,9 @@ class InfoLogic {
                 Response.ErrorListener {
                     Toast.makeText(context,"Ошибка запроса", Toast.LENGTH_LONG).show()
                     progressBar.visibility = ProgressBar.GONE
-                }
+                },
+                creds.first,
+                creds.second
             )
             queue.add(request)
         }

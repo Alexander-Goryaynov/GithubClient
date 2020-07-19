@@ -13,6 +13,13 @@ class FavoritesLogic {
         fun addToFavorites(repos: Repository, context: Context) {
             initRealm(context)
             val realm = Realm.getDefaultInstance()
+            val duplicate = realm.where(RealmRepository::class.java)
+                .equalTo("id", repos.id)
+                .findFirst()
+            if (duplicate != null) {
+                realm.close()
+                return
+            }
             var realmRepos = RealmRepository()
             realmRepos = realmRepos.apply {
                 id = repos.id

@@ -17,8 +17,9 @@ class SearchLogic {
 
     companion object {
 
-        fun getRepositories(query: String, context: Context, queue: RequestQueue,
+        fun  getRepositories(query: String, context: Context, queue: RequestQueue,
                             recyclerView: RecyclerView, progressBar: ProgressBar) {
+            val creds = AuthorizationLogic.getSavedCreds(context)
             val request = GithubJsonRequest(
                 "https://api.github.com/search/repositories?q=$query",
                 Response.Listener {
@@ -29,7 +30,9 @@ class SearchLogic {
                 Response.ErrorListener {
                     Toast.makeText(context,"Ошибка запроса", Toast.LENGTH_LONG).show()
                     progressBar.visibility = ProgressBar.GONE
-                }
+                },
+                creds.first,
+                creds.second
             )
             queue.add(request)
         }

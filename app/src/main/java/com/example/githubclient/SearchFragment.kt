@@ -52,7 +52,8 @@ class SearchFragment : Fragment() {
         recyclerView.visibility = View.GONE
         progressBar.visibility = ProgressBar.VISIBLE
         val query = editTextId.text.toString()
-        if (query == "") {
+        if (query.isBlank()) {
+            progressBar.visibility = ProgressBar.GONE
             return
         }
         SearchLogic.getRepositories(query, this.activity!!, queue, recyclerView, progressBar)

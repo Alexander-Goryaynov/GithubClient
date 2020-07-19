@@ -13,16 +13,17 @@ import java.io.UnsupportedEncodingException
 class GithubJsonRequest(
     url: String,
     _listener: Response.Listener<JSONObject>,
-    errorListener: Response.ErrorListener
+    errorListener: Response.ErrorListener,
+    _login: String,
+    _password: String
 ) : Request<JSONObject>(Method.GET, url, errorListener) {
-
-    private val login = "Alexander-Goryaynov"
-    private val token = "566581bc54dd1b7b4a57825f87d29587fa381ba1"
+    private val login = _login
+    private val password = _password
     private var listener: Response.Listener<JSONObject> = _listener
 
     override fun getHeaders(): MutableMap<String, String> {
         val headers = mutableMapOf<String, String>()
-        val creds = "$login:$token"
+        val creds = "$login:$password"
         val auth = "Basic " + Base64.encodeToString(creds.toByteArray(), Base64.NO_WRAP)
         headers["Content-Type"] = "application/json"
         headers["Authorization"] = auth
