@@ -46,7 +46,7 @@ class InfoLogic {
                 val item = jsonArr.getJSONObject(i)
                 val commit = item.getJSONObject("commit")
                 val commitMessage = commit.getString("message")
-                var commitAuthor : JSONObject
+                var commitAuthor: JSONObject
                 var commitDate: String? = null
                 var authorLogin: String? = null
                 var authorAvatarUrl: String? = null

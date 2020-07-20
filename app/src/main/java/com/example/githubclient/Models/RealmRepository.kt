@@ -12,4 +12,5 @@ open class RealmRepository : RealmObject() {
     lateinit var ownerLogin: String
     lateinit var ownerAvatarUrl: String
     lateinit var commitsUrl: String
+    lateinit var userLogin: String
 }

@@ -13,8 +13,10 @@ class FavoritesLogic {
         fun addToFavorites(repos: Repository, context: Context) {
             initRealm(context)
             val realm = Realm.getDefaultInstance()
+            val currentLogin = AuthorizationLogic.getSavedCreds(context).first
             val duplicate = realm.where(RealmRepository::class.java)
                 .equalTo("id", repos.id)
+                .equalTo("userLogin", currentLogin)
                 .findFirst()
             if (duplicate != null) {
                 realm.close()
@@ -31,6 +33,7 @@ class FavoritesLogic {
                 ownerLogin = repos.ownerLogin.toString()
                 ownerAvatarUrl = repos.ownerAvatarUrl.toString()
                 commitsUrl = repos.commitsUrl.toString()
+                userLogin = currentLogin
             }
             realm.beginTransaction()
             realm.copyToRealm(realmRepos)
@@ -41,8 +44,12 @@ class FavoritesLogic {
         fun getFavoritesList(context: Context): List<Repository> {
             initRealm(context)
             val realm = Realm.getDefaultInstance()
+            val currentLogin = AuthorizationLogic.getSavedCreds(context).first
             val result = arrayListOf<Repository>()
-            val query = realm.where(RealmRepository::class.java).findAll()
+            val query = realm
+                .where(RealmRepository::class.java)
+                .equalTo("userLogin", currentLogin)
+                .findAll()
             for (i in query) {
                 val repos = Repository(
                     i.id,
@@ -64,9 +71,11 @@ class FavoritesLogic {
         fun removeFromFavorites(id: Int, context: Context) {
             initRealm(context)
             val realm = Realm.getDefaultInstance()
+            val currentLogin = AuthorizationLogic.getSavedCreds(context).first
             realm.beginTransaction()
             realm.where(RealmRepository::class.java)
                 .equalTo("id", id)
+                .equalTo("userLogin", currentLogin)
                 .findFirst()?.deleteFromRealm()
             realm.commitTransaction()
             realm.close()
@@ -75,8 +84,10 @@ class FavoritesLogic {
         fun isInFavorites(id: Int, context: Context): Boolean {
             initRealm(context)
             val realm = Realm.getDefaultInstance()
+            val currentLogin = AuthorizationLogic.getSavedCreds(context).first
             val query = realm.where(RealmRepository::class.java)
                 .equalTo("id", id)
+                .equalTo("userLogin", currentLogin)
                 .findFirst()
             val result = (query != null)
             realm.close()

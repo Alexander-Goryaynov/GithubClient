@@ -47,7 +47,7 @@ class AuthorizationLogic {
             return core.getInt("limit")
         }
 
-        fun saveCreds(context: Context, _login: String, _password: String) {
+        private fun saveCreds(context: Context, _login: String, _password: String) {
             var creds = RealmCredentials()
             creds = creds.apply {
                 login = _login
