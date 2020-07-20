@@ -9,6 +9,18 @@ import com.example.githubclient.R
 class SearchAdapter(private val repos: List<Repository>
 ) : RecyclerView.Adapter<SearchViewHolder>() {
 
+    override fun setHasStableIds(hasStableIds: Boolean) {
+        super.setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val rootView = LayoutInflater
             .from(parent.context)
