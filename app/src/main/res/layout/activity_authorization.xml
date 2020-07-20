@@ -35,6 +35,8 @@
         android:layout_marginStart="32dp"
         android:layout_marginBottom="16dp"
         android:text="Логин"
+        android:textColor="#1E1E1E"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/editTextLoginId"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -44,6 +46,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Пароль или токен"
+        android:textColor="#1E1E1E"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/editTextLoginId"
         app:layout_constraintTop_toBottomOf="@+id/editTextLoginId" />
 
@@ -52,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:background="#000000"
+        android:background="#0B0B0B"
         android:text="Войти"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"

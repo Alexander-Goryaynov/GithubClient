@@ -23,7 +23,9 @@ class AuthorizationLogic {
                     response ->
                         if (parseRateLimit(response) > 60) {
                             saveCreds(context, login, password)
-                            context.startActivity(Intent(context, SearchActivity::class.java))
+                            val intent = Intent(context, SearchActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                            context.startActivity(intent)
                         } else {
                             Toast.makeText(context, "Неверные данные",
                                 Toast.LENGTH_LONG).show()
@@ -75,6 +77,16 @@ class AuthorizationLogic {
             val result = Pair(query?.login!!, query.password)
             realm.close()
             return result
+        }
+
+        fun deleteCreds(context: Context) {
+            initRealm(context)
+            val realm = Realm.getDefaultInstance()
+            realm.beginTransaction()
+            realm.where(RealmCredentials::class.java)
+                .findFirst()?.deleteFromRealm()
+            realm.commitTransaction()
+            realm.close()
         }
 
         private fun initRealm(context: Context) {

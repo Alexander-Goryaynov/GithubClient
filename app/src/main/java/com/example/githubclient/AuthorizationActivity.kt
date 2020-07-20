@@ -1,10 +1,9 @@
 package com.example.githubclient
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import com.android.volley.RequestQueue
+import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.toolbox.Volley
 import com.example.githubclient.Logic.AuthorizationLogic
 import kotlinx.android.synthetic.main.activity_authorization.*
@@ -15,7 +14,9 @@ class AuthorizationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authorization)
         if (AuthorizationLogic.anyCreds(this)) {
-            startActivity(Intent(this, SearchActivity::class.java))
+            val intent = Intent(this, SearchActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            startActivity(intent)
         }
         buttonLoginId.setOnClickListener {
             val login = editTextLoginId.text.toString()
@@ -28,4 +29,6 @@ class AuthorizationActivity : AppCompatActivity() {
                 Volley.newRequestQueue(this))
         }
     }
+
+    override fun onBackPressed() { }
 }
